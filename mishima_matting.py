@@ -1,5 +1,7 @@
 import scipy.spatial
 import numpy as np
+import sys
+import imageio
 
 # Get fg/bg distances for each pixel from each surface on convex hull
 def convex_hull_distance(cvx_hull, pixels):
@@ -38,16 +40,15 @@ def mishima_matte(img, trimap):
 
 # Load in image
 def main():    
-    img  = scipy.misc.imread('toy.jpg')
-    trimap = scipy.misc.imread('toyTrimap.png', flatten='True')
-
+    img  = scipy.misc.imread(sys.argv[1])
+    trimap = scipy.misc.imread(sys.argv[2], flatten='True')
     alpha = mishima_matte(img, trimap)
-
-    plt.imshow(alpha, cmap='gray')
-    plt.show()
-    h, w, c = img.shape
-    plt.imshow((alpha.reshape(h,w,1).repeat(3,2)*img).astype(np.uint8))
-    plt.show()
+    imageio.imwrite(sys.argv[3], alpha)
+    #plt.imshow(alpha, cmap='gray')
+    #plt.show()
+    #h, w, c = img.shape
+    #plt.imshow((alpha.reshape(h,w,1).repeat(3,2)*img).astype(np.uint8))
+    #plt.show()
 
 if __name__ == "__main__":
     import scipy.misc
